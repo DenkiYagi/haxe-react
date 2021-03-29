@@ -190,8 +190,8 @@ class ReactComponentMacro {
 	#if (js_es == '6')
 	// Rewrite field inits for ES6 generator: remove init expressions and move
 	// them right after super() call
-	// Note: it's still unsafe because those fields could be used before
-	// `super()`; need a second pass to ensure that it's fine
+	// Note: it's safe because if you use those fields before super() call, haxe
+	// will see it and generate "Must call `super()` [...]" error accordingly
 	static public function fixES6Constructor(inClass:ClassType, fields:Array<Field>):Array<Field> {
 		var fieldInits = [];
 		var constructor:Null<Field> = null;
