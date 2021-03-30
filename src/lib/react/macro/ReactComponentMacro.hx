@@ -200,7 +200,6 @@ class ReactComponentMacro {
 			var fname = f.name;
 			fieldInits.push(macro this.$fname = $e);
 
-			if (t == null) t = TypeTools.toComplexType(Context.typeof(e));
 			if (t == null) {
 				// Rewrite error to remove the confusing part
 				Context.error('Variable requires type-hint', f.pos);
