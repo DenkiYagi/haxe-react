@@ -200,6 +200,23 @@ class ReactComponentMacro {
 			var fname = f.name;
 			fieldInits.push(macro this.$fname = $e);
 
+			// Guess constant types
+			if (t == null) {
+				switch (e.expr) {
+					case EConst(c):
+						t = switch (c) {
+							case CInt(_): macro :Int;
+							case CFloat(_): macro :Float;
+							case CString(_, _): macro :String;
+							case CRegexp(_, _): macro :EReg;
+							case CIdent('true') | CIdent('false'): macro :Bool;
+							case CIdent(_): null;
+						};
+
+					case _:
+				}
+			}
+
 			if (t == null) {
 				// Rewrite error to remove the confusing part
 				Context.error('Variable requires type-hint', f.pos);
