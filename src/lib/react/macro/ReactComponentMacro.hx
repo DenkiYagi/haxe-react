@@ -219,8 +219,10 @@ class ReactComponentMacro {
 
 			if (t == null) {
 				// Rewrite error to remove the confusing part
-				Context.error('Variable requires type-hint', f.pos);
-				Context.error('... Defined in this class', inClass.pos);
+				// Need to use fatal error to make sure the build macro
+				// chain stops and this error is not shadowed by some
+				// unexpected side effect
+				Context.fatalError('Variable requires type-hint', f.pos);
 			}
 
 			return t;
