@@ -1,6 +1,8 @@
 package react;
 
 import js.Symbol;
+import js.lib.Promise;
+
 import react.ReactComponent.ReactElement;
 import react.ReactComponent.ReactFragment;
 import react.ReactComponent.ReactSingleFragment;
@@ -76,6 +78,26 @@ extern class React
 	**/
 	public static var Children:ReactChildren;
 
+	/**
+		https://reactjs.org/docs/react-api.html#reactlazy
+		https://reactjs.org/docs/code-splitting.html#reactlazy
+	**/
+	public static function lazy(loader:Void->Promise<Module<ReactType>>):ReactType;
+
+	/**
+		Utility to use `React.lazy()` on an already loaded `ReactType` (either
+		class component or function), mostly to be used with `react.Suspense`.
+	**/
+	public static inline function lazify(t:ReactType):ReactType {
+		return lazy(() -> Promise.resolve(React.createModule(t)));
+	}
+
+	/**
+		Let any `ReactType` pretend to be a module in order to be usable by
+		`React.lazy()`. Works with class components, functions, etc.
+	**/
+	public static inline function createModule(t:ReactType):Module<ReactType> return t;
+
 	public static var version:String;
 
 	public static var Fragment:Symbol;
@@ -121,3 +143,7 @@ extern interface ReactChildren
 @:deprecated
 typedef CreateElementType = ReactType;
 
+@:coreType abstract Module<T> {
+	@:from
+	static function fromT<T>(v:T):Module<T> return cast {"default": v};
+}
