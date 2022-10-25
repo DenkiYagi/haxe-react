@@ -2,6 +2,7 @@ package react;
 
 #if macro
 import haxe.ds.Option;
+import haxe.macro.Compiler;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.Type;
@@ -18,6 +19,7 @@ import react.macro.PropsValidator;
 import react.macro.ReactMeta;
 import react.macro.ReactComponentMacro;
 
+using react.macro.MacroUtil;
 using tink.MacroApi;
 using StringTools;
 
@@ -27,6 +29,7 @@ private typedef ObjectField = {field:String, expr:Expr};
 
 typedef ComponentReflection = {
 	children:Void->ComplexType,
+	propsType:Null<Expr>,
 	neededAttrs:Array<String>,
 	typeChecker:StringAt->Expr->Expr
 };
@@ -38,36 +41,34 @@ typedef ComponentReflection = {
 @:dce
 class ReactMacro
 {
-	static public macro function jsx(expr:ExprOf<String>):Expr
-	{
-		if (Context.defined('display')) {
-			return switch(expr) {
-				case macro @:markup $v{(s:String)}: macro @:pos(expr.pos) untyped $v{s};
-				case _: macro @:pos(expr.pos) untyped $e{expr};
-			};
-		}
+	static public macro function jsx(expr:ExprOf<String>):Expr {
+		return _jsx(expr);
+	}
 
+	#if macro
+	static var REACT_FRAGMENT_CT = macro :react.ReactComponent.ReactFragment;
+
+	public static function _jsx(expr:Expr):Expr {
 		function children(c:Children)
 			return switch c.value {
-				case [v]: @:pos(c.pos) child(v);
+				case [v]: child(v);
 				case []: expr.reject('empty jsx');
 				default: expr.reject('only one node allowed here');
 			};
 
-		return children(
-			tink.hxx.Parser.parseRoot(
+		try {
+			return children(tink.hxx.Parser.parseRoot(
 				expr,
 				{
 					fragment: 'react.Fragment',
 					defaultExtension: 'html',
 					treatNested: function(c) return children.bind(c).bounce()
 				}
-			)
-		);
+			));
+		} catch (e:HxxEscape) {
+			return e.expr;
+		}
 	}
-
-	#if macro
-	static var REACT_FRAGMENT_CT = macro :react.ReactComponent.ReactFragment;
 
 	static function children(c:tink.hxx.Children, getChildrenType:Void->ComplexType) {
 		var lazyType:ComplexType = null;
@@ -79,9 +80,9 @@ class ReactMacro
 				lazyType = getChildrenType();
 
 				if (lazyType == REACT_FRAGMENT_CT)
-					[for (c in tink.hxx.Generator.normalize(c.value)) macro @:pos(c.pos) (${child(c)}:$lazyType)];
+					[for (c in tink.hxx.Generator.normalize(c.value)) macro (${child(c)}:$lazyType)];
 				else
-					[for (c in tink.hxx.Generator.normalize(c.value)) macro @:pos(c.pos) ${child(c)}];
+					[for (c in tink.hxx.Generator.normalize(c.value)) macro ${child(c)}];
 		};
 
 		return {
@@ -90,9 +91,9 @@ class ReactMacro
 				case []: null;
 				case [v]:
 					if (lazyType == null) lazyType = getChildrenType();
-					macro @:pos(c.pos) (${v}:$lazyType);
+					macro (${v}:$lazyType);
 
-				case a: macro @:pos(c.pos) ($a{a} :Array<$REACT_FRAGMENT_CT>);
+				case a: macro ($a{a} :Array<$REACT_FRAGMENT_CT>);
 			}
 		};
 	}
@@ -122,9 +123,48 @@ class ReactMacro
 				};
 
 				var isHtml = type.getString().isSuccess(); //TODO: this is a little awkward
-				if (!isHtml) JsxStaticMacro.handleJsxStaticProxy(type);
 
-				var component = componentReflection(type, c.pos, isHtml);
+				function handleTagDisplay(pos) {
+					if (isHtml) {
+						// Try to resolve corresponding html element
+						// (note all html elements have a dedicated js.html.*Element class)
+						var typeStr = type.getString().sure().toLowerCase();
+
+						var typeExpr = switch (typeStr) {
+							case "p": macro js.html.ParagraphElement;
+							case "h1" | "h2" | "h3" | "h4" | "h5" | "h6": macro js.html.HeadingElement;
+							// TODO: other special cases
+
+							case _:
+								var tagClass = typeStr.charAt(0).toUpperCase() + typeStr.substr(1) + "Element";
+								var ct = macro :js.html.$tagClass;
+								try {
+									Context.typeof(macro (null:$ct));
+									macro js.html.$tagClass;
+								} catch (_) {
+									macro js.html.Element;
+								}
+						};
+
+						typeExpr.pos = pos;
+						throw new HxxEscape({pos: pos, expr: EDisplay(typeExpr, DKMarked)});
+					}
+
+					throw new HxxEscape({
+						pos: n.name.pos,
+						expr: EDisplay(macro @:pos(n.name.pos) $e{type}, DKMarked)
+					});
+				}
+
+				if (Context.containsDisplayPosition(n.name.pos)) {
+					handleTagDisplay(n.name.pos);
+				} else if (n.closing != null && Context.containsDisplayPosition(n.closing)) {
+					handleTagDisplay(n.closing);
+				}
+
+				if (!isHtml) JsxStaticMacro.handleJsxStaticProxy(type);
+				var pos = (macro null).pos;
+				var component = componentReflection(type, pos, isHtml);
 				var checkProp = component.typeChecker;
 				var childrenType = component.children;
 				var neededAttrs = component.neededAttrs.copy();
@@ -133,7 +173,6 @@ class ReactMacro
 				var spread = [];
 				var key = null;
 				var ref = null;
-				var pos = n.name.pos;
 
 				function add(name:StringAt, e:Expr)
 				{
@@ -160,10 +199,38 @@ class ReactMacro
 							invalid.pos.error('attribute ${invalid.value} must have a value');
 
 						case Empty(name):
+							if (Context.containsDisplayPosition(name.pos)) {
+								if (component.propsType != null) {
+									var prop = name.value;
+
+									throw new HxxEscape({
+										pos: name.pos,
+										expr: EDisplay(macro @:pos(name.pos) $e{component.propsType}.$prop, DKMarked)
+									});
+								}
+							}
+
 							neededAttrs.remove(name.value);
 							add(name, macro @:pos(name.pos) true);
 
 						case Regular(name, value):
+							if (Context.containsDisplayPosition(name.pos)) {
+								if (component.propsType != null) {
+									var prop = name.value;
+
+									throw new HxxEscape({
+										pos: name.pos,
+										expr: EDisplay(macro @:pos(name.pos) $e{component.propsType}.$prop, DKMarked)
+									});
+								}
+							}
+
+							if (Context.containsDisplayPosition(value.pos)) {
+								// TODO: recurse to pinpoint the most precise expression possible
+								// TODO: handle recursive jsx here.. somehow..
+								throw new HxxEscape({pos: value.pos, expr: EDisplay(value, DKMarked)});
+							}
+
 							neededAttrs.remove(name.value);
 							var expr = value.getString()
 								.map(function (s) return haxe.macro.MacroStringTools.formatString(s, value.pos))
@@ -175,6 +242,21 @@ class ReactMacro
 								case 'ref' if (n.name.value != 'react.Fragment'): ref = expr;
 								default: add(name, expr);
 							}
+					}
+				}
+
+				// TODO: uh well need to be sure we're not inside a value either..
+				if (Context.containsDisplayPosition(n.opening) && !Context.getDisplayMode().match(Hover)) {
+					if (component.propsType != null) {
+						// TODO: make an util out of this
+						var rawPos = Compiler.getDisplayPos();
+						var pos = haxe.macro.PositionTools.make({file: rawPos.file, min: rawPos.pos, max: rawPos.pos});
+
+						// TODO: delay that process and only give missing props
+						throw new HxxEscape({
+							pos: pos,
+							expr: EDisplay({pos: pos, expr: EField(component.propsType, "sa")}, DKDot)
+						});
 					}
 				}
 
@@ -192,6 +274,20 @@ class ReactMacro
 				var typeInfo = ReactComponentMacro.getComponentInfo(type);
 				JsxStaticMacro.injectDisplayNames(type);
 				var useLiteral = JsxLiteral.canUseLiteral(typeInfo, ref);
+
+				// TODO: find a way to restrict to ReactType
+				// TODO: handle html tags too
+				// TODO: check hxx parser for <| completion requests
+				if (Context.containsDisplayPosition(c.pos)) {
+					// TODO: make an util out of this
+					var rawPos = Compiler.getDisplayPos();
+					var pos = haxe.macro.PositionTools.make({file: rawPos.file, min: rawPos.pos, max: rawPos.pos});
+
+					throw new HxxEscape({
+						pos: pos,
+						expr: EDisplay(macro @:pos(pos) (null:react.ReactType), DKMarked)
+					});
+				}
 
 				if (useLiteral)
 				{
@@ -232,6 +328,7 @@ class ReactMacro
 						}
 					}
 
+					var pos = (macro null).pos;
 					var props = JsxPropsBuilder.makeProps(spread, attrs, pos);
 					props = applyDefaultProps(props);
 					JsxLiteral.genLiteral(type, props, ref, key, pos);
@@ -241,9 +338,10 @@ class ReactMacro
 					if (ref != null) attrs.unshift({field:'ref', expr:ref});
 					if (key != null) attrs.unshift({field:'key', expr:key});
 
+					var pos = (macro null).pos;
 					var props = JsxPropsBuilder.makeProps(spread, attrs, pos);
 					var args = [type, props].concat(children.individual);
-					macro @:pos(c.pos) react.React.createElement($a{args});
+					macro react.React.createElement($a{args});
 				}
 
 			case CSplat(_):
@@ -296,7 +394,7 @@ class ReactMacro
 			case 0: macro null;
 			case 1: childrenArr[0];
 			default:
-				macro @:pos(c.pos) react.React.createElement($a{
+				macro react.React.createElement($a{
 					[macro react.Fragment, macro null].concat(childrenArr)
 				});
 		};
@@ -317,6 +415,7 @@ class ReactMacro
 
 			return function (name:StringAt, value:Expr) {
 				var field = name.value;
+				// Position is used for invalid prop name
 				var target = macro @:pos(name.pos) $placeholder.$field;
 
 				// Handle components accepting more than their own props
@@ -376,9 +475,10 @@ class ReactMacro
 					}
 				}
 
-				var t = Context.typeof(macro @:pos(value.pos) {
+				var t = Context.typeof(macro {
 					var __pseudo = $target;
-					__pseudo = $value;
+					// Position used for value type mismatch
+					@:pos(value.pos) __pseudo = $value;
 				});
 
 				if (isTMono) {
@@ -431,17 +531,39 @@ class ReactMacro
 			);
 		}
 
+		function resolveHtmlTag(tag:String):Null<Expr> {
+			for (kind in ["normal", "opaque", "void"]) {
+				try {
+					var e = macro (null:tink.domspec.Tags).$kind.$tag;
+					Context.typeof(e);
+					return e;
+				} catch (_) {}
+			}
+
+			return null;
+		}
+
 		return isHtml
 			? {
 				children: function() return REACT_FRAGMENT_CT,
+				#if tink_domspec
+				// See below in typeChecker about needed special handling
+				propsType: resolveHtmlTag(type.getString().sure()),
+				#else
+				propsType: null,
+				#end
 				neededAttrs: [],
 				typeChecker: function(name:StringAt, value:Expr) {
+					var prop = name.value;
+
+					// data-* attributes are all possible, with (iirc) String type?
+					if (StringTools.startsWith(prop, "data-")) return macro @:pos(value.pos) ($value :String);
+
 					#if !react_jsx_no_aria
 					// Type valid aria- attributes
 					// TODO: consider displaying warning for unknown `aria-` props
-					var field = name.value;
-					if (StringTools.startsWith(field, "aria-")) {
-						var ct = AriaAttributes.map[field];
+					if (StringTools.startsWith(prop, "aria-")) {
+						var ct = AriaAttributes.map[prop];
 						if (ct != null) return macro @:pos(value.pos) (${value} :$ct);
 					}
 					#end
@@ -449,6 +571,32 @@ class ReactMacro
 					#if (css_types && !react_jsx_no_css_types)
 					if (name.value == "style")
 						return macro @:pos(value.pos) (${value} :haxe.extern.EitherType<css.Properties, String>);
+					#end
+
+					#if tink_domspec
+						var tagExpr = resolveHtmlTag(type.getString().sure());
+
+						if (tagExpr != null) {
+							// Be forgiving about compatibility with tink_domspec, because:
+							// - some things don't work the same (event handlers, react-specific attributes, etc.)
+							// - some attributes are still missing (input.form, a.name, ...)
+							// TODO: add special handling for dangerouslSetInnerHTML etc.
+							try {
+								var prop = name.value;
+								Context.typeof(macro $tagExpr.$prop);
+
+								Context.typeof(macro {
+									var o = null;
+									o = $tagExpr.$prop;
+									@:pos(value.pos) o = $value;
+									$value;
+								});
+							} catch (e) {
+								#if react.debugDomspec
+								Context.warning(e.message, name.pos);
+								#end
+							}
+						}
 					#end
 
 					return value;
@@ -460,15 +608,17 @@ class ReactMacro
 					var ctProps = TypeTools.toComplexType(tProps);
 					{
 						children: extractChildrenType(macro @:pos(nodePos) (null:$ctProps).children),
+						propsType: macro (null:$ctProps),
 						neededAttrs: extractNeededAttrs(tProps),
-						typeChecker: propsFor(macro @:pos(nodePos) (null:$ctProps))
+						typeChecker: propsFor(macro (null:$ctProps))
 					};
 
-				case TFun(args, _):
+				case TFun(args, ret):
 					switch (args) {
 						case []:
 							{
 								children: function() return macro :react.Empty,
+								propsType: macro (null:react.Empty),
 								neededAttrs: [],
 								typeChecker: function (_, e:Expr) {
 									e.reject('no props allowed here');
@@ -477,6 +627,12 @@ class ReactMacro
 							};
 
 						case [v]:
+							var propsType = macro {
+								var o = null;
+								$type(o);
+								o;
+							};
+
 							{
 								children: extractChildrenType(macro @:pos(nodePos) {
 									var o = null;
@@ -484,11 +640,8 @@ class ReactMacro
 									o.children;
 								}),
 								neededAttrs: extractNeededAttrs(v.t),
-								typeChecker: propsFor(macro @:pos(nodePos) {
-									var o = null;
-									$type(o);
-									o;
-								})
+								propsType: propsType,
+								typeChecker: propsFor(propsType)
 							};
 
 						case v:
@@ -497,18 +650,20 @@ class ReactMacro
 
 				case TInst(_.toString() => "String", []):
 					{
+						propsType: null,
 						children: function() return macro :react.Empty,
 						neededAttrs: [],
-						typeChecker: function(_, e:Expr) return e
+						typeChecker: function(_, e:Expr) return macro $e
 					};
 
 				default:
-					var typeExpr = macro @:pos(nodePos) {
+					var typeExpr = macro {
 						function get<T>(c:Class<T>):T return null;
 						@:privateAccess get($type).props;
 					};
 
 					{
+						propsType: typeExpr,
 						children: extractChildrenType(macro @:pos(nodePos) {
 							function get<T>(c:Class<T>):T return null;
 							@:privateAccess get($type).props.children;
@@ -532,9 +687,6 @@ class ReactMacro
 
 	static var neededAttrsCache:Map<String, Array<String>> = new Map();
 	static function extractNeededAttrs(type:Type) {
-		// Not needed for completion
-		if (Context.defined('display')) return [];
-
 		var key = Std.string(type);
 		if (neededAttrsCache.exists(key)) return neededAttrsCache.get(key);
 
@@ -578,3 +730,10 @@ class ReactMacro
 	}
 	#end
 }
+
+#if macro
+class HxxEscape {
+	public var expr:Expr;
+	public function new(expr:Expr) this.expr = expr;
+}
+#end
