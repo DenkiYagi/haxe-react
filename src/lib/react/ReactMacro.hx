@@ -474,11 +474,14 @@ class ReactMacro
 					}
 				}
 
-				var t = Context.typeof(macro {
+				// Support "import as"
+				function deepFollow(t:Type) return TypeTools.map(Context.follow(t), deepFollow);
+
+				var t = deepFollow(Context.typeof(macro {
 					var __pseudo = $target;
 					// Position used for value type mismatch
 					@:pos(value.pos) __pseudo = $value;
-				});
+				}));
 
 				if (isTMono) {
 					#if !react_ignore_failed_props_inference
