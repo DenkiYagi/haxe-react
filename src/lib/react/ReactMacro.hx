@@ -503,10 +503,14 @@ class ReactMacro
 						if (t1 == null) t1 = MacroUtil.tryMapFollow(t);
 						if (t1 != null) t = t1;
 
-						var ct = TypeTools.toComplexType(t);
-						Context.typeExpr(macro @:pos(value.pos) ($value :$ct));
+						try {
+							var ct = TypeTools.toComplexType(t);
+							Context.typeExpr(macro @:pos(value.pos) ($value :$ct));
+						} catch (e:haxe.macro.Error) {
+							Context.error(e.message, e.pos.or(value.pos));
+						}
 					} else {
-						Context.error(e.message, e.pos);
+						Context.error(e.message, e.pos.or(value.pos));
 					}
 				};
 

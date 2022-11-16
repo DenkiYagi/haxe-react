@@ -150,3 +150,11 @@ class MacroUtil {
 		};
 	}
 }
+
+class PositionTools {
+	public static function or(pos:Position, fallback:Position):Position {
+		if (pos == null) return fallback;
+		if (haxe.macro.PositionTools.getInfos(pos).min == -1) return fallback;
+		return pos;
+	}
+}
