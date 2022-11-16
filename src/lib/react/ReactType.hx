@@ -18,36 +18,36 @@ abstract ReactType(Node) to Node
 {
 	#if !macro
 	@:from
-	static public function fromString(s:String):ReactType
+	static public inline function fromString(s:String):ReactType
 	{
-		#if debug
+		#if react.debug
 		if (s == null) return isNull();
 		#end
 		return cast s;
 	}
 
 	@:from
-	static public function fromFunction(f:Void->ReactFragment):ReactType
+	static public inline function fromFunction(f:Void->ReactFragment):ReactType
 	{
-		#if debug
+		#if react.debug
 		if (f == null) return isNull();
 		#end
 		return cast f;
 	}
 
 	@:from
-	static public function fromFunctionWithProps<TProps>(f:TProps->ReactFragment):ReactType
+	static public inline function fromFunctionWithProps<TProps>(f:TProps->ReactFragment):ReactType
 	{
-		#if debug
+		#if react.debug
 		if (f == null) return isNull();
 		#end
 		return cast f;
 	}
 
 	@:from
-	static public function fromComp(cls:Class<ReactComponent<Dynamic,Dynamic>>):ReactType
+	static public inline function fromComp(cls:Class<ReactComponent<Dynamic,Dynamic>>):ReactType
 	{
-		#if debug
+		#if react.debug
 		if (cls == null) return isNull();
 		#end
 
@@ -57,7 +57,7 @@ abstract ReactType(Node) to Node
 		return cast cls;
 	}
 
-	#if debug
+	#if react.debug
 	static public function isNull():ReactType {
 		js.Browser.console.error(
 			'Runtime value for ReactType is null.'
