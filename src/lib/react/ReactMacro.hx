@@ -163,8 +163,7 @@ class ReactMacro
 				}
 
 				if (!isHtml) JsxStaticMacro.handleJsxStaticProxy(type);
-				var pos = (macro null).pos;
-				var component = componentReflection(type, pos, isHtml);
+				var component = componentReflection(type, n.name.pos, isHtml);
 				var checkProp = component.typeChecker;
 				var childrenType = component.children;
 				var neededAttrs = component.neededAttrs.copy();
