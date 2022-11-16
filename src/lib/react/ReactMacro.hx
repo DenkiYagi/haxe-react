@@ -591,12 +591,22 @@ class ReactMacro
 								var prop = name.value;
 								Context.typeof(macro $tagExpr.$prop);
 
-								Context.typeof(macro {
-									var o = null;
-									o = $tagExpr.$prop;
-									@:pos(value.pos) o = $value;
+								var check = () -> {
+									Context.typeof(macro {
+										var o = null;
+										o = $tagExpr.$prop;
+										// Position used for value type mismatch
+										@:pos(value.pos) o = $value;
+										$value;
+									});
+
+									return macro {};
+								};
+
+								return macro {
+									${check.bounce()}
 									$value;
-								});
+								};
 							} catch (e) {
 								#if react.debugDomspec
 								Context.warning(e.message, name.pos);
