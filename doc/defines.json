@@ -1,0 +1,18 @@
+[
+  {
+    "define": "react_no_inline",
+    "doc": "Skip React.createElement inlining optimization."
+  },
+  {
+    "define": "react_global",
+    "doc": "Use window.React instead of require() from modular/webpack."
+  },
+  {
+    "define": "react_hot",
+    "doc": "Adds some data needed for react hot reloading with modular/webpack."
+  },
+  {
+    "define": "react_runtime_warnings",
+    "doc": "Enable some runtime warnings for debug purpose."
+  }
+]

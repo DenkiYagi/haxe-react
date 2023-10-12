@@ -10,6 +10,11 @@
   "version": "1.122.0",
   "url": "https://github.com/kLabz/haxe-react",
   "classPath": "src/lib",
+  "documentation": {
+    "url": "https://github.com/kLabz/haxe-react/tree/next/doc",
+    "metadata": "doc/metadata.json",
+    "defines": "doc/defines.json"
+  },
   "dependencies": {
     "tink_hxx": "",
     "js-object": ""

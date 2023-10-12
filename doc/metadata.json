@@ -1,0 +1,19 @@
+[
+  {
+    "metadata": ":wrap",
+    "doc": "Wrap current class component in a HOC.",
+    "params": ["HOC"],
+    "targets": ["TClass"]
+  },
+  {
+    "metadata": ":publicProps",
+    "doc": "Set public props type to ensure jsx type checking.",
+    "params": ["TProps"],
+    "targets": ["TClass"]
+  },
+  {
+    "metadata": ":noPublicProps",
+    "doc": "Disallow public props for this component when used in jsx.",
+    "targets": ["TClass"]
+  }
+]
