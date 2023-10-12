@@ -10,33 +10,34 @@ import react.ReactContext;
 import react.ReactType;
 
 /**
-	https://facebook.github.io/react/docs/react-api.html
+	https://react.dev/reference/react/apis
+	https://react.dev/reference/react/legacy
 **/
 #if (!react_global)
 @:jsRequire("react")
 #end
 @:native('React')
-extern class React
-{
-	// Warning: react.React.PropTypes is deprecated, reference as react.ReactPropTypes
-
+extern class React {
 	/**
-		https://reactjs.org/docs/react-api.html#createelement
+		https://react.dev/reference/react/createElement
 	**/
 	public static function createElement(type:ReactType, ?attrs:Dynamic, children:haxe.extern.Rest<Dynamic>):ReactElement;
 
 	/**
-		https://reactjs.org/docs/react-api.html#cloneelement
+		Warning:
+		Using `cloneElement` is uncommon and can lead to fragile code
+
+		https://react.dev/reference/react/cloneElement
 	**/
 	public static function cloneElement(element:ReactElement, ?attrs:Dynamic, children:haxe.extern.Rest<Dynamic>):ReactElement;
 
 	/**
-		https://reactjs.org/docs/react-api.html#isvalidelement
+		https://react.dev/reference/react/isValidElement
 	**/
 	public static function isValidElement(object:ReactFragment):Bool;
 
 	/**
-		https://reactjs.org/docs/context.html#reactcreatecontext
+		https://react.dev/reference/react/createContext
 
 		Creates a `{ Provider, Consumer }` pair.
 		When React renders a context `Consumer`, it will read the current
@@ -55,7 +56,7 @@ extern class React
 	):ReactContext<TContext>;
 
 	/**
-		https://reactjs.org/docs/react-api.html#reactcreateref
+		https://react.dev/reference/react/createRef
 
 		Note: this API has been introduced in React 16.3
 		If you are using an earlier release of React, use callback refs instead
@@ -64,8 +65,8 @@ extern class React
 	public static function createRef<TRef>():ReactRef<TRef>;
 
 	/**
-		https://reactjs.org/docs/react-api.html#reactforwardref
-		See also https://reactjs.org/docs/forwarding-refs.html
+		https://react.dev/reference/react/forwardRef
+		See also https://react.dev/learn/manipulating-the-dom-with-refs
 
 		Note: this API has been introduced in React 16.3
 		If you are using an earlier release of React, use callback refs instead
@@ -74,13 +75,15 @@ extern class React
 	public static function forwardRef<TProps, TRef>(render:TProps->ReactRef<TRef>->ReactFragment):ReactType;
 
 	/**
-		https://reactjs.org/docs/react-api.html#reactchildren
+		Warning
+		Using `Children` is uncommon and can lead to fragile code.
+
+		https://react.dev/reference/react/Children
 	**/
 	public static var Children:ReactChildren;
 
 	/**
-		https://reactjs.org/docs/react-api.html#reactlazy
-		https://reactjs.org/docs/code-splitting.html#reactlazy
+		https://react.dev/reference/react/lazy
 	**/
 	public static function lazy(loader:Void->Promise<Module<ReactType>>):ReactType;
 
@@ -110,32 +113,31 @@ extern class React
 }
 
 /**
-	https://reactjs.org/docs/react-api.html#reactchildren
+	https://react.dev/reference/react/Children
 **/
-extern interface ReactChildren
-{
+extern interface ReactChildren {
 	/**
-		https://reactjs.org/docs/react-api.html#reactchildrenmap
+		https://react.dev/reference/react/Children#children-map
 	**/
 	function map(children:Dynamic, fn:Array<ReactFragment>->ReactFragment):Null<Array<ReactFragment>>;
 
 	/**
-		https://reactjs.org/docs/react-api.html#reactchildrenforeach
+		https://react.dev/reference/react/Children#children-foreach
 	**/
 	function foreach(children:Dynamic, fn:ReactFragment->Void):Void;
 
 	/**
-		https://reactjs.org/docs/react-api.html#reactchildrencount
+		https://react.dev/reference/react/Children#children-count
 	**/
 	function count(children:ReactFragment):Int;
 
 	/**
-		https://reactjs.org/docs/react-api.html#reactchildrenonly
+		https://react.dev/reference/react/Children#children-only
 	**/
 	function only(children:ReactFragment):ReactSingleFragment;
 
 	/**
-		https://reactjs.org/docs/react-api.html#reactchildrentoarray
+		https://react.dev/reference/react/Children#children-toarray
 	**/
 	function toArray(children:ReactFragment):Array<ReactFragment>;
 }

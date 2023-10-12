@@ -7,6 +7,12 @@ typedef SuspenseProps = {
 	@:optional var children:ReactFragment;
 }
 
+/**
+	https://react.dev/reference/react/Suspense
+
+	`<Suspense>` lets you display a fallback until its children have finished
+	loading.
+**/
 #if (!react_global)
 @:jsRequire("react", "Suspense")
 #end
