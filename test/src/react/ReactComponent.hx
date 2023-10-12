@@ -12,7 +12,8 @@ typedef ReactComponentProps = {
 /**
 	STUB CLASSES
 **/
-typedef ReactComponent = ReactComponentOf<Dynamic, Dynamic>;
+@:genericBuild(react.macro.ReactComponentMacro.buildVariadic())
+class ReactComponent<Rest> {}
 typedef ReactComponentOfProps<TProps> = ReactComponentOf<TProps, Empty>;
 typedef ReactComponentOfState<TState> = ReactComponentOf<Empty, TState>;
 
