@@ -1,6 +1,6 @@
 package react.macro;
 
-@:enum abstract ReactMeta(String) to String {
+enum abstract ReactMeta(String) to String {
 	// Components specification
 
 	/**

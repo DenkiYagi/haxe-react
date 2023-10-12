@@ -20,7 +20,7 @@ extern interface ReactSharedInternals
 /**
 	https://github.com/facebook/react/blob/master/packages/shared/ReactWorkTags.js
 **/
-@:enum abstract WorkTag(Int) from Int to Int
+enum abstract WorkTag(Int) from Int to Int
 {
 	var FunctionalComponent = 0;
 	var FunctionalComponentLazy = 1;
@@ -177,7 +177,7 @@ extern interface UpdateQueue<State>
 	var lastCapturedEffect:Null<Update<State>>;
 }
 
-@:enum abstract UpdateTag(Int) from Int to Int
+enum abstract UpdateTag(Int) from Int to Int
 {
 	var UpdateState = 0;
 	var ReplaceState = 1;
@@ -185,7 +185,7 @@ extern interface UpdateQueue<State>
 	var CaptureUpdate = 3;
 }
 
-@:enum abstract TypeOfMode(Int) from Int to Int
+enum abstract TypeOfMode(Int) from Int to Int
 {
 	var NoContext = 0;
 	var AsyncMode = 1;
@@ -193,7 +193,7 @@ extern interface UpdateQueue<State>
 	var ProfileMode = 3;
 }
 
-@:enum abstract SideEffectTag(Int) from Int to Int
+enum abstract SideEffectTag(Int) from Int to Int
 {
 	var NoEffect = 0;
 	var PerformedWork = 1;

@@ -60,18 +60,18 @@ class AriaAttributes {
 typedef IdReference = String;
 typedef IdReferenceList = String;
 
-@:enum abstract TriState(Dynamic) from Bool {
+enum abstract TriState(Dynamic) from Bool {
 	var Mixed = "mixed";
 }
 
-@:enum abstract AriaAutoComplete(String) {
+enum abstract AriaAutoComplete(String) {
 	var Inline = "inline";
 	var List = "list";
 	var Both = "both";
 	var None = "none";
 }
 
-@:enum abstract AriaCurrent(Dynamic) from Bool {
+enum abstract AriaCurrent(Dynamic) from Bool {
 	var Page = "page";
 	var Step = "step";
 	var Location = "location";
@@ -79,7 +79,7 @@ typedef IdReferenceList = String;
 	var Time = "time";
 }
 
-@:enum abstract AriaHasPopup(Dynamic) from Bool {
+enum abstract AriaHasPopup(Dynamic) from Bool {
 	var Menu = "menu";
 	var Listbox = "listbox";
 	var Tree = "tree";
@@ -87,23 +87,23 @@ typedef IdReferenceList = String;
 	var Dialog = "dialog";
 }
 
-@:enum abstract AriaInvalid(Dynamic) from Bool {
+enum abstract AriaInvalid(Dynamic) from Bool {
 	var Grammar = "grammar";
 	var Spelling = "spelling";
 }
 
-@:enum abstract AriaLive(String) {
+enum abstract AriaLive(String) {
 	var Assertive = "assertive";
 	var Off = "off";
 	var Polite = "polite";
 }
 
-@:enum abstract AriaOrientation(String) {
+enum abstract AriaOrientation(String) {
 	var Horizontal = "horizontal";
 	var Vertical = "vertical";
 }
 
-@:enum abstract AriaRelevant(String) {
+enum abstract AriaRelevant(String) {
 	var Additions = "additions";
 	var AdditionsText = "additions text";
 	var All = "all";
@@ -111,7 +111,7 @@ typedef IdReferenceList = String;
 	var Text = "text";
 }
 
-@:enum abstract AriaSort(String) {
+enum abstract AriaSort(String) {
 	var Ascending = "ascending";
 	var Descending = "descending";
 	var None = "none";

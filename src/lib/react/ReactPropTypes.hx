@@ -52,7 +52,7 @@ typedef CustomTypeChecker = Dynamic -> String -> String -> Null<Error>;
 typedef CustomArrayOfTypeChecker = Array<Dynamic> -> String -> String -> PropTypesLocation -> String -> Null<Error>;
 typedef TypeShape = Dynamic<TypeChecker>;
 
-@:enum abstract PropTypesLocation(String) from String {
+enum abstract PropTypesLocation(String) from String {
 	var Prop = 'prop';
 	var Context = 'context';
 	var ChildContext = 'child context';

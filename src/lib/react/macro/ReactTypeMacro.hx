@@ -107,10 +107,9 @@ class ReactTypeMacro
 		stateType:ComplexType
 	) {
 		fields.push((macro class C {
-			@:extern
 			@:overload(function(nextState:react.Partial<$stateType>, ?callback:Void -> Void):Void {})
 			@:overload(function(nextState:$stateType -> $propsType -> react.Partial<$stateType>, ?callback:Void -> Void):Void {})
-			override public function setState(nextState:$stateType -> react.Partial<$stateType>, ?callback:Void -> Void):Void
+			override public extern function setState(nextState:$stateType -> react.Partial<$stateType>, ?callback:Void -> Void):Void
 				#if !haxe4
 				{ super.setState(nextState, callback); }
 				#end
