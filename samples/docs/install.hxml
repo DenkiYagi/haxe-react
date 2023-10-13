@@ -1,5 +1,4 @@
 -lib HtmlParser:3.3.2
--lib markdown:1.1.1
 -lib event-types:0.8.0
 -lib js-object:0.0.7
 -lib datetime:3.1.4
@@ -19,3 +18,4 @@
 -lib react-css:git:git@github.com:kLabz/haxe-react-css.git#5595611
 -lib classnames:git:git@github.com:kLabz/haxe-classnames.git#30e7436
 -lib yaml:git:git@github.com:kLabz/hx-yaml.git#c61ca1f
+-lib markdown:git:git@github.com:kLabz/haxe-markdown.git#8503130
