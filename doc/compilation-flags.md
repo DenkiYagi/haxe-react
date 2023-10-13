@@ -8,7 +8,7 @@ title: Custom compilation flags
 
 This is not a custom compilation flag, but it enables/disables some features in
 haxe-react. Basically, you'll want to compile with it when using dev version of
-react, and remove it when using prog version.
+react, and remove it when using prod version.
 
 ### Disabled features
 

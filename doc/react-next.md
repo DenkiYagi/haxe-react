@@ -316,7 +316,7 @@ compatible with other versions.
 * `React._internals.ReactDebugCurrentFrame.getCurrentStack()` will list all
 parent nodes of current element, up to the root node of the application
 
-#### [`TODO`]() Generate PropTypes for more runtime checks on props
+#### [`TODO`](<>) Generate PropTypes for more runtime checks on props
 
 There are already many checks at compile time to ensure you are not doing
 obvious mistakes. However, sometimes the compiler cannot see what is really
