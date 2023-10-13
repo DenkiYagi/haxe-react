@@ -279,19 +279,26 @@ th, td {
 
 /* Code */
 
+code {
+	white-space: nowrap;
+	font-size: 0.8em;
+	padding: .25em .5em;
+	color: var(--orange-light);
+	background-color: var(--pre-bg-color);
+}
+
 pre {
 	position: relative;
 	color: var(--pre-color);
 	background-color: var(--pre-bg-color);
 	padding: 1em;
+	font-size: 0.9rem;
 	max-width: 100%;
 	overflow: auto;
 }
 
 code, pre, kbd {
-	white-space: pre;
 	font-family: "DejaVu Sans Mono", monospace, monospace;
-	font-size: 0.90rem;
 	line-height: 154%;
 	tab-size: 4;
 	-moz-tab-size: 4;
@@ -314,6 +321,14 @@ pre > code::before {
 	padding: 0 0.25em;
 }
 
+pre > code {
+	white-space: pre;
+	font-size: inherit;
+	color: inherit;
+	background: none;
+	padding: 0;
+}
+
 pre.chroma {
 	/* position: relative; */
 	margin-bottom: 0;
@@ -331,13 +346,6 @@ pre.chroma {
 }
 
 /* Note: see chroma.css for syntax highlighting */
-
-/* Inline Code */
-p code {
-	padding: .25em .5em;
-	color: var(--orange-light);
-	background-color: var(--pre-bg-color);
-}
 
 blockquote {
 	border-left: 4px solid var(--fg);
