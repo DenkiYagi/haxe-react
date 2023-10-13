@@ -1,13 +1,21 @@
 package comp;
 
+import AppContext;
 import data.DocChapter;
 
-private typedef Props = {
+private typedef PublicProps = {
 	var chapter:Null<String>;
 	var chapters:Array<DocChapter>;
 }
 
+private typedef Props = {
+	> PublicProps,
+	> AppContextData,
+}
+
 @:css
+@:publicProps(PublicProps)
+@:wrap(AppContext.wrap)
 class SidePanel extends ReactComponent<Props> {
 	static var styles:Stylesheet = {
 		'_': {
@@ -65,6 +73,7 @@ class SidePanel extends ReactComponent<Props> {
 	};
 
 	override function render():ReactFragment {
+		var ext = props.staticSite ? '.html' : '';
 		return jsx(
 			<div className={className}>
 				<a href="/" className={classNames({"active": props.chapter == null})}>Home</a>
@@ -73,7 +82,7 @@ class SidePanel extends ReactComponent<Props> {
 				<div className="subnav">
 					<for {chapter in props.chapters}>
 						<div key={chapter.slug}>
-							<a href={chapter.slug} className={chapter.slug == props.chapter ? "active" : null}>
+							<a href={chapter.slug + ext} className={chapter.slug == props.chapter ? "active" : null}>
 								{chapter.title}
 							</a>
 						</div>

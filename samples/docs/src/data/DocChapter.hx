@@ -1,5 +1,7 @@
 package data;
 
+import js.lib.Promise;
+import js.node.Fs.Fs;
 import sys.FileSystem;
 import sys.io.File;
 
@@ -28,6 +30,24 @@ function sortChapters(chapters:Array<DocChapter>):Array<DocChapter> {
 	});
 
 	return chapters;
+}
+
+function loadChapters():Promise<Array<DocChapter>> {
+	return new Promise((resolve, reject) -> {
+		Fs.readdir("../../doc", (err, files) -> {
+			var chapters = (files ?? [])
+				.map(f -> loadChapter(Path.join(["..", "..", "doc", f])))
+				.filter(f -> f != null);
+
+			resolve(sortChapters(chapters));
+		});
+	});
+}
+
+function loadReadme():Null<DocChapter> {
+	var ret = loadChapter(Path.join(["..", "..", "README.md"]));
+	if (ret != null) ret.slug = '/';
+	return ret;
 }
 
 function loadChapter(path:String):Null<DocChapter> {

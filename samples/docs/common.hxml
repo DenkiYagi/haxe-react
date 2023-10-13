@@ -1,0 +1,30 @@
+-L react-next
+-L react-css
+-L css-types
+-L classnames
+-L datetime
+-L markdown
+-L event-types
+-L html-entities
+-L tink_domspec
+-L hxnodejs
+-L yaml
+
+-cp src
+
+# -dce full
+-D js-es=6
+# -D analyzer-optimize
+-D message.reporting=pretty
+
+-w -WDeprecatedEnumAbstract
+
+# Configure react-css
+-D react.css.out=bin/styles.css
+-D react.css.base=res/base.css
+# -D react.css.sourcemap=styles.css.map
+
+# Configure react-next
+-D react-wrap-strict
+-D react-check-jsxstatic-type
+-D react-disable-dynamic-components

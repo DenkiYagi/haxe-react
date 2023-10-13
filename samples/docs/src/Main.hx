@@ -8,7 +8,6 @@ import js.node.http.IncomingMessage;
 import js.node.http.ServerResponse;
 
 import react.ReactDOMServer;
-import react.Suspense;
 import react.ReactMacro.jsx;
 
 import comp.App;

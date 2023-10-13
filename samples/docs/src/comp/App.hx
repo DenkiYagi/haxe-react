@@ -1,14 +1,11 @@
 package comp;
 
-import haxe.io.Path;
-import js.node.Fs;
-import js.lib.Promise;
-
 import comp.layout.*;
 import data.DocChapter;
 
 private typedef PublicProps = {
 	var chapter:Null<String>;
+	@:optional var staticSite:Bool;
 }
 
 private typedef Props = {
@@ -60,7 +57,7 @@ class App extends ReactComponent<Props> {
 				.then(chapters -> (_) -> jsx(
 					<Comp
 						{...props}
-						home={loadChapter(Path.join(["..", "..", "README.md"]))}
+						home={loadReadme()}
 						chapters={chapters}
 					/>
 				))
@@ -69,18 +66,6 @@ class App extends ReactComponent<Props> {
 
 			return jsx(<LazyComp />);
 		};
-	}
-
-	static function loadChapters():Promise<Array<DocChapter>> {
-		return new Promise((resolve, reject) -> {
-			Fs.readdir("../../doc", (err, files) -> {
-				var chapters = (files ?? [])
-					.map(f -> loadChapter(Path.join(["..", "..", "doc", f])))
-					.filter(f -> f != null);
-
-				resolve(sortChapters(chapters));
-			});
-		});
 	}
 
 	override function render():ReactFragment {
@@ -100,19 +85,21 @@ class App extends ReactComponent<Props> {
 
 				<body>
 					<div className={className}>
-						<StaticBorderTop />
+						<AppContext.Provider value={{staticSite: props.staticSite}}>
+							<StaticBorderTop />
 
-						<SidePanel chapter={props.chapter} chapters={props.chapters} />
+							<SidePanel chapter={props.chapter} chapters={props.chapters} />
 
-						<MainWrapper>
-							<MainContent>
-								<MainContentContainer>
-									<Article chapter={extractChapter()} />
-								</MainContentContainer>
-							</MainContent>
-						</MainWrapper>
+							<MainWrapper>
+								<MainContent>
+									<MainContentContainer>
+										<Article chapter={extractChapter()} />
+									</MainContentContainer>
+								</MainContent>
+							</MainWrapper>
 
-						<StaticBorderBottom />
+							<StaticBorderBottom />
+						</AppContext.Provider>
 					</div>
 				</body>
 			</html>
