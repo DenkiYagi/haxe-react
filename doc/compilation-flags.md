@@ -1,3 +1,7 @@
+---
+title: Custom compilation flags
+---
+
 # Custom compilation flags used by haxe-react
 
 ## `-debug` / `-D debug`

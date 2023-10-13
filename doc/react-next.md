@@ -1,3 +1,8 @@
+---
+order: 0
+title: React "next"
+---
+
 # Haxe React #next
 
 Branch `#next` of my haxe-react fork aims to move haxe-react forward to `2.0.0+`

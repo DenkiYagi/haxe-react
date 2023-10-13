@@ -1,3 +1,7 @@
+---
+title: Wrap with HOC
+---
+
 # Wrapping your components in HOCs
 
 You can use HOCs with your components (unless they are `@:jsxStatic` components)

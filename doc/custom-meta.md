@@ -1,3 +1,7 @@
+---
+title: Custom metadata
+---
+
 # Custom meta used by haxe-react
 
 ## `@:wrap(hoc)`

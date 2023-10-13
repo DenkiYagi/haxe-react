@@ -1,3 +1,7 @@
+---
+title: React Refs API (React 16.3)
+---
+
 # New React Refs API (React 16.3)
 
 Externs have been added for [`React.createRef()`][createRef] and

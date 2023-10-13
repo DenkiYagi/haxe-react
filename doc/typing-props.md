@@ -1,3 +1,7 @@
+---
+title: Typing your props
+---
+
 # Typing your props with haxe-react
 
 One of the points of using Haxe to develop javascript applications is to benefit
