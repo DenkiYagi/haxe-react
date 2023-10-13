@@ -289,12 +289,13 @@ code {
 
 pre {
 	position: relative;
-	color: var(--pre-color);
-	background-color: var(--pre-bg-color);
 	padding: 1em;
 	font-size: 0.9rem;
 	max-width: 100%;
 	overflow: auto;
+	color: var(--pre-color);
+	background-color: var(--pre-bg-color);
+	scrollbar-color: var(--orange) var(--dark);
 }
 
 code, pre, kbd {
