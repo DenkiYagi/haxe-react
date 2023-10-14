@@ -22,12 +22,14 @@ class TestMain
 		var suites = new Array<Class<massive.munit.TestSuite>>();
 		suites.push(TestSuite);
 
+		var host = "http://127.0.0.1:2000/";
+
 		#if MCOVER
 			var client = new mcover.coverage.munit.client.MCoverPrintClient();
-			var httpClient = new HTTPClient(new mcover.coverage.munit.client.MCoverSummaryReportClient());
+			var httpClient = new HTTPClient(new mcover.coverage.munit.client.MCoverSummaryReportClient(), host);
 		#else
 			var client = new RichPrintClient();
-			var httpClient = new HTTPClient(new SummaryReportClient());
+			var httpClient = new HTTPClient(new SummaryReportClient(), host);
 		#end
 
 		var runner:TestRunner = new TestRunner(client);
