@@ -1,0 +1,12 @@
+-lib HtmlParser:3.3.2
+-lib js-object:0.0.7
+-lib html-entities:1.0.0
+-lib msignal:1.2.5
+
+-lib tink_macro:1.0.1
+-lib tink_parse:0.4.1
+-lib tink_core:2.1.0
+-lib tink_domspec:0.5.0
+-lib tink_svgspec:0.0.1
+-lib tink_anon:git:git@github.com:haxetink/tink_anon.git#0277e6e
+-lib tink_hxx:git:git@github.com:kLabz/tink_hxx.git#5a01af1

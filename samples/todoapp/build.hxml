@@ -1,7 +1,7 @@
 -js bin/index.js
 -cp src
 -main Main
--lib react
+-lib react-next
 -lib msignal
 -D react_global
 #-D react_no_inline

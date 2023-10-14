@@ -1,5 +1,6 @@
 package view;
 
+import react.ReactRef;
 import react.React;
 import react.ReactComponent;
 import react.ReactMacro.jsx;
@@ -12,56 +13,54 @@ typedef TodoAppState = {
 	items:Array<TodoItem>
 }
 
-typedef TodoAppRefs = {
-	input:InputElement
-}
-
-class TodoApp extends ReactComponentOfStateAndRefs<TodoAppState, TodoAppRefs>
+class TodoApp extends ReactComponentOfState<TodoAppState>
 {
+	var input:ReactRef<InputElement> = React.createRef();
 	var todoStore = new TodoStore();
-	
+
 	public function new(props:Dynamic)
 	{
 		super(props);
-		
+
 		state = { items:todoStore.list };
-		
+
 		todoStore.changed.add(function() {
 			setState({ items:todoStore.list });
 		});
 	}
-	
-	override public function render() 
+
+	override public function render()
 	{
 		var unchecked = state.items.filter(function(item) return !item.checked).length;
-		
+
 		var listProps = { data:state.items };
-		return jsx('
+		return jsx(
 			<div className="app" style={{margin:"10px"}}>
-				<div className="header">
-					<input ref="input" placeholder="Enter new task description" />
-					<button className="button-add" onClick=$addItem>+</button>
-				</div>
+				<form className="header" onSubmit={addItem}>
+					<input ref={input} placeholder="Enter new task description" />
+					<input type="submit" className="button-add" value="+" />
+				</form>
 				<hr/>
-				<$TodoList ref={mountList} {...listProps} className="list"/>
+				<TodoList ref={mountList} {...listProps} className="list" />
 				<hr/>
-				<div className="footer"><b>$unchecked</b> task(s) left</div>
+				<div className="footer"><b>{unchecked}</b> task(s) left</div>
 			</div>
-		');
+		);
 	}
-	
+
 	function mountList(comp:ReactComponent)
 	{
 		trace('List mounted ' + comp.props);
 	}
-	
-	function addItem()
+
+	function addItem(e)
 	{
-		var text = refs.input.value;
-		if (text.length > 0) 
+		e.preventDefault();
+		var text = input.current.value;
+		if (text.length > 0)
 		{
 			TodoActions.addItem.dispatch(text);
-			refs.input.value = "";
+			input.current.value = "";
 		}
 	}
 }

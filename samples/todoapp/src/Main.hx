@@ -9,6 +9,7 @@ class Main
 {
 	public static function main()
 	{
-		ReactDOM.render(jsx('<$TodoApp/>'), Browser.document.getElementById('app'));
+		var root = ReactDOMClient.createRoot(Browser.document.getElementById('app'));
+		root.render(jsx('<$TodoApp/>'));
 	}
 }
