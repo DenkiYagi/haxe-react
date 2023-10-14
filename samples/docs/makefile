@@ -7,6 +7,9 @@ setup:
 	npm i
 
 server:
+	haxe build.hxml
+
+start-server:
 	node bin/server.js
 
 static:
