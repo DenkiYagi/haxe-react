@@ -14,6 +14,9 @@ class CompBasic extends ReactComponent {}
 @:ignoreEmptyRender
 class CompBasicProps extends ReactComponentOfProps<{a:Int}> {}
 
+@:ignoreEmptyRender
+class CompRenderFunctionProps extends ReactComponentOfProps<{?render:()->ReactElement}> {}
+
 typedef RenderProps = {
 	@:optional var children:Int->ReactFragment;
 }
@@ -407,6 +410,16 @@ class ReactMacroTest
 			}
 			Assert.areEqual(if (flag) 0 else 9, counter);
 		}
+	}
+
+	@Test
+	public function render_function_props() {
+		function fn() return jsx('<></>');
+		var e = jsx('<CompRenderFunctionProps render=${fn}/>');
+		assertHasProps(
+			e.props,
+			['render'], [fn]
+		);
 	}
 
 	@Test

@@ -475,7 +475,10 @@ class ReactMacro
 				}
 
 				// Support "import as"
-				function deepFollow(t:Type) return TypeTools.map(Context.follow(t), deepFollow);
+				function deepFollow(t:Type) {
+					if (t == null) return null;
+					return TypeTools.map(Context.follow(t), deepFollow);
+				}
 
 				var t = deepFollow(Context.typeof(macro {
 					var __pseudo = $target;
