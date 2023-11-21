@@ -1,8 +1,9 @@
 package react;
 
+import haxe.extern.EitherType;
+import haxe.extern.Rest;
 import js.Symbol;
 import js.lib.Promise;
-
 import react.ReactComponent.ReactElement;
 import react.ReactComponent.ReactFragment;
 import react.ReactComponent.ReactSingleFragment;
@@ -10,8 +11,9 @@ import react.ReactContext;
 import react.ReactType;
 
 /**
-	https://react.dev/reference/react/apis
-	https://react.dev/reference/react/legacy
+	- https://react.dev/reference/react/apis
+	- https://react.dev/reference/react/hooks
+	- https://react.dev/reference/react/legacy
 **/
 #if (!react_global)
 @:jsRequire("react")
@@ -21,7 +23,7 @@ extern class React {
 	/**
 		https://react.dev/reference/react/createElement
 	**/
-	public static function createElement(type:ReactType, ?attrs:Dynamic, children:haxe.extern.Rest<Dynamic>):ReactElement;
+	static function createElement(type:ReactType, ?attrs:Dynamic, children:Rest<Dynamic>):ReactElement;
 
 	/**
 		Warning:
@@ -29,12 +31,12 @@ extern class React {
 
 		https://react.dev/reference/react/cloneElement
 	**/
-	public static function cloneElement(element:ReactElement, ?attrs:Dynamic, children:haxe.extern.Rest<Dynamic>):ReactElement;
+	static function cloneElement(element:ReactElement, ?attrs:Dynamic, children:Rest<Dynamic>):ReactElement;
 
 	/**
 		https://react.dev/reference/react/isValidElement
 	**/
-	public static function isValidElement(object:ReactFragment):Bool;
+	static function isValidElement(object:ReactFragment):Bool;
 
 	/**
 		https://react.dev/reference/react/createContext
@@ -50,7 +52,7 @@ extern class React {
 		Note: passing `undefined` as a `Provider` value does not cause Consumers
 		to use `defaultValue`.
 	**/
-	public static function createContext<TContext>(
+	static function createContext<TContext>(
 		?defaultValue:TContext,
 		?calculateChangedBits:TContext->TContext->Int
 	):ReactContext<TContext>;
@@ -62,7 +64,7 @@ extern class React {
 		If you are using an earlier release of React, use callback refs instead
 		https://reactjs.org/docs/refs-and-the-dom.html#callback-refs
 	**/
-	public static function createRef<TRef>():ReactRef<TRef>;
+	static function createRef<T>():ReactMutableRef<T>;
 
 	/**
 		https://react.dev/reference/react/forwardRef
@@ -72,7 +74,7 @@ extern class React {
 		If you are using an earlier release of React, use callback refs instead
 		https://reactjs.org/docs/refs-and-the-dom.html#callback-refs
 	**/
-	public static function forwardRef<TProps, TRef>(render:TProps->ReactRef<TRef>->ReactFragment):ReactType;
+	static function forwardRef<TProps, TRef>(render:(props:TProps, ref:ReactRef<TRef>)->ReactFragment):ReactType;
 
 	/**
 		Warning
@@ -80,18 +82,116 @@ extern class React {
 
 		https://react.dev/reference/react/Children
 	**/
-	public static var Children:ReactChildren;
+	static final Children:ReactChildren;
 
 	/**
 		https://react.dev/reference/react/lazy
 	**/
-	public static function lazy(loader:Void->Promise<Module<ReactType>>):ReactType;
+	static function lazy(loader:Void->Promise<Module<ReactType>>):ReactType;
+
+	/**
+		https://react.dev/reference/react/memo
+	**/
+	static function memo<TProps:{}>(component:ReactType, ?arePropsEqual:(prevProps:TProps, nextProps:TProps)->Bool):ReactType;
+
+	/**
+		https://react.dev/reference/react/startTransition
+	**/
+	static function startTransition(scope:()->Void):Void;
+
+	/**
+		https://react.dev/reference/react/useState
+	**/
+	static function useState<T>(initialState:EitherType<T, ()->T>):ReactState<T>;
+
+	/**
+		https://react.dev/reference/react/useReducer
+	**/
+	@:overload(function<TState>(
+		reducer:(prevState:TState)->TState,
+		initialArg:TState,
+		?init:(arg:TState)->TState
+	):ReactReducer<TState, Any> {})
+	static function useReducer<TState, TAction>(
+		reducer:(prevState:TState, action:TAction)->TState,
+		initialArg:TState,
+		?init:(arg:TState)->TState
+	):ReactReducer<TState, TAction>;
+
+	/**
+		https://react.dev/reference/react/useContext
+	**/
+	static function useContext<T>(context:ReactContext<T>):T;
+
+	/**
+		https://react.dev/reference/react/useRef
+	**/
+	static function useRef<T>(initialValue:T):ReactRef<T>;
+
+	/**
+		https://react.dev/reference/react/useImperativeHandle
+	**/
+	static function useImperativeHandle<T:{}>(ref:ReactRef<T>, createHandle:()->T, ?dependencies:Array<Dynamic>):Void;
+
+	/**
+		https://react.dev/reference/react/useEffect
+	**/
+	static function useEffect(setup:EitherType<()->Void, ()->(()->Void)>, ?dependencies:Array<Dynamic>):Void;
+
+	/**
+		https://react.dev/reference/react/useLayoutEffect
+	**/
+	static function useLayoutEffect(setup:EitherType<()->Void, ()->(()->Void)>, ?dependencies:Array<Dynamic>):Void;
+
+	/**
+		https://react.dev/reference/react/useInsertionEffect
+	**/
+	static function useInsertionEffect(setup:()->Void, ?dependencies:Array<Dynamic>):Void;
+
+	/**
+		https://react.dev/reference/react/useMemo
+	**/
+	static function useMemo<T>(calculateValue:()->T, ?dependencies:Array<Dynamic>):T;
+
+	/**
+		https://react.dev/reference/react/useCallback
+	**/
+	static function useCallback<T:haxe.Constraints.Function>(fn:T, ?dependencies:Array<Dynamic>):T;
+
+	/**
+		https://react.dev/reference/react/useTransition
+	**/
+	static function useTransition():ReactTransition;
+
+	/**
+		https://react.dev/reference/react/useDeferredValue
+	**/
+	static function useDeferredValue<T>(value:T):T;
+
+	/**
+		https://react.dev/reference/react/useDebugValue
+	**/
+	static function useDebugValue<T>(value:T, ?format:(value:T)->Dynamic):Void;
+
+	/**
+		https://react.dev/reference/react/useId
+	**/
+	static function useId():String;
+
+	/**
+		https://react.dev/reference/react/useSyncExternalStore
+	**/
+	static function useSyncExternalStore<T>(
+		subscribe:(onChange:()->Void)->(()->Void),
+		getSnapshot:()->T,
+		?getServerSnapshot:()->T
+	):T;
 
 	/**
 		Utility to use `React.lazy()` on an already loaded `ReactType` (either
 		class component or function), mostly to be used with `react.Suspense`.
 	**/
-	public static inline function lazify(t:ReactType):ReactType {
+	static inline function lazify(t:ReactType):ReactType {
 		return lazy(() -> Promise.resolve(React.createModule(t)));
 	}
 
@@ -99,17 +199,17 @@ extern class React {
 		Let any `ReactType` pretend to be a module in order to be usable by
 		`React.lazy()`. Works with class components, functions, etc.
 	**/
-	public static inline function createModule(t:ReactType):Module<ReactType> return t;
+	static inline function createModule(t:ReactType):Module<ReactType> return t;
 
-	public static var version:String;
+	static final version:String;
 
-	public static var Fragment:Symbol;
-	public static var StrictMode:Symbol;
-	public static var unstable_AsyncMode:Symbol;
-	public static var unstable_Profiler:Symbol;
+	static final Fragment:Symbol;
+	static final StrictMode:Symbol;
+	static final unstable_AsyncMode:Symbol;
+	static final unstable_Profiler:Symbol;
 
 	@:native('__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED')
-	public static var _internals:ReactSharedInternals;
+	static var _internals:ReactSharedInternals;
 }
 
 /**

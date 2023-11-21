@@ -1,17 +1,6 @@
 package react;
 
-import haxe.Constraints.Function;
-
-@:callable
-abstract ReactRef<T>(Function) {
-	public var current(get, set):T;
-
-	public function get_current():T {
-		return untyped this.current;
-	}
-
-	public function set_current(value:T):T {
-		return untyped this.current = value;
-	}
+abstract ReactRef<T>({current:T}) {
+	public var current(get, never):T;
+	inline extern function get_current() return this.current;
 }
-
