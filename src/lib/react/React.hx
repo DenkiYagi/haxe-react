@@ -1,6 +1,5 @@
 package react;
 
-import haxe.extern.EitherType;
 import haxe.extern.Rest;
 import js.Symbol;
 import js.lib.Promise;
@@ -102,7 +101,8 @@ extern class React {
 	/**
 		https://react.dev/reference/react/useState
 	**/
-	static function useState<T>(initialState:EitherType<T, ()->T>):ReactState<T>;
+	@:overload(function<T>(initialState:T):ReactState<T> {})
+	static function useState<T>(initialState:()->T):ReactState<T>;
 
 	/**
 		https://react.dev/reference/react/useReducer
@@ -136,12 +136,14 @@ extern class React {
 	/**
 		https://react.dev/reference/react/useEffect
 	**/
-	static function useEffect(setup:EitherType<()->Void, ()->(()->Void)>, ?dependencies:Array<Dynamic>):Void;
+	@:overload(function (setup:()->Void, ?dependencies:Array<Dynamic>):Void {})
+	static function useEffect(setup:()->(()->Void), ?dependencies:Array<Dynamic>):Void;
 
 	/**
 		https://react.dev/reference/react/useLayoutEffect
 	**/
-	static function useLayoutEffect(setup:EitherType<()->Void, ()->(()->Void)>, ?dependencies:Array<Dynamic>):Void;
+	@:overload(function (setup:()->Void, ?dependencies:Array<Dynamic>):Void {})
+	static function useLayoutEffect(setup:()->(()->Void), ?dependencies:Array<Dynamic>):Void;
 
 	/**
 		https://react.dev/reference/react/useInsertionEffect
