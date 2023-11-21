@@ -1,0 +1,7 @@
+{
+  "codedox": {
+    "commentbegin": "/**",
+    "commentprefix": "\t",
+    "commentend": "**/"
+  }
+}
