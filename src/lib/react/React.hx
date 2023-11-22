@@ -63,7 +63,7 @@ extern class React {
 		If you are using an earlier release of React, use callback refs instead
 		https://reactjs.org/docs/refs-and-the-dom.html#callback-refs
 	**/
-	static function createRef<T>():ReactMutableRef<T>;
+	static function createRef<T>():ReactRef<T>;
 
 	/**
 		https://react.dev/reference/react/forwardRef
