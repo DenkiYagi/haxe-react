@@ -16,7 +16,8 @@
     "defines": "doc/defines.json"
   },
   "dependencies": {
-    "tink_hxx": "",
+    "tink_hxx": "git:https://github.com/kLabz/tink_hxx",
+    "tink_anon": "git:https://github.com/haxetink/tink_anon.git",
     "js-object": ""
   }
 }
