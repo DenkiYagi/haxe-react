@@ -1,7 +1,7 @@
 package react;
 
 import haxe.extern.Rest;
-import js.Symbol;
+import js.lib.Symbol;
 import js.lib.Promise;
 import react.ReactComponent.ReactElement;
 import react.ReactComponent.ReactFragment;
@@ -73,7 +73,7 @@ extern class React {
 		If you are using an earlier release of React, use callback refs instead
 		https://reactjs.org/docs/refs-and-the-dom.html#callback-refs
 	**/
-	static function forwardRef<TProps, TRef>(render:(props:TProps, ref:ReactRef<TRef>)->ReactFragment):ReactType;
+	static function forwardRef<TProps, TRef>(render:(props:TProps, ref:ReactRef<TRef>)->ReactFragment):ReactTypeOf<TProps>;
 
 	/**
 		Warning
@@ -91,7 +91,7 @@ extern class React {
 	/**
 		https://react.dev/reference/react/memo
 	**/
-	static function memo<TProps:{}>(component:ReactType, ?arePropsEqual:(prevProps:TProps, nextProps:TProps)->Bool):ReactType;
+	static function memo<TProps:{}>(component:ReactTypeOf<TProps>, ?arePropsEqual:(prevProps:TProps, nextProps:TProps)->Bool):ReactTypeOf<TProps>;
 
 	/**
 		https://react.dev/reference/react/startTransition

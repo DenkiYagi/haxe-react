@@ -1,5 +1,6 @@
 package react;
 
+import react.ReactType;
 import react.ReactComponent.ReactElement;
 import react.ReactComponent.ReactFragment;
 
@@ -35,6 +36,13 @@ extern class React
 	public static inline function isValidElement(object:Dynamic):Bool
 	{
 		return true;
+	}
+
+	/**
+		https://react.dev/reference/react/memo
+	**/
+	public static inline function memo<TProps:{}>(component:ReactTypeOf<TProps>, ?arePropsEqual:(prevProps:TProps, nextProps:TProps)->Bool):ReactTypeOf<TProps> {
+		return component;
 	}
 
 	/**

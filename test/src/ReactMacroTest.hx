@@ -1,5 +1,6 @@
 package;
 
+import react.React;
 import js.Syntax;
 import massive.munit.Assert;
 import react.ReactComponent;
@@ -109,6 +110,16 @@ class ReactMacroTest
 	{
 		var e = jsx('<CompBasic a="foo" />');
 		Assert.areEqual(CompBasic, e.type);
+		assertHasProps(e.props, ['a'], ['foo']);
+	}
+
+	@Test
+	public function memorized_with_props()
+	{
+		final Memorized = React.memo(RenderFunction);
+
+		var e = jsx('<Memorized a="foo" />');
+		Assert.areEqual(Memorized, e.type);
 		assertHasProps(e.props, ['a'], ['foo']);
 	}
 

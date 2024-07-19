@@ -1,6 +1,8 @@
 package react;
 
+#if debug
 import react.ReactComponent.ReactSource;
+#end
 
 extern interface ReactSharedInternals
 {
