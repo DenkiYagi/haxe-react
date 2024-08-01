@@ -1,5 +1,6 @@
 package react;
 
+import haxe.macro.ComplexTypeTools;
 #if macro
 import haxe.ds.Option;
 import haxe.macro.Compiler;
@@ -623,14 +624,28 @@ class ReactMacro
 			}
 			: switch (t) {
 				case TAbstract(_.toString() => "react.ReactTypeOf", [tProps])
-				| TAbstract(_.toString() => "Null", [TAbstract(_.toString() => "react.ReactTypeOf", [tProps])])
-				| TAbstract(_.toString() => "react.ReactProviderType", [tProps])
-				| TAbstract(_.toString() => "Null", [TAbstract(_.toString() => "react.ReactProviderType", [tProps])]):
+				| TAbstract(_.toString() => "Null", [TAbstract(_.toString() => "react.ReactTypeOf", [tProps])]):
 					var ctProps = TypeTools.toComplexType(tProps);
 					{
 						children: extractChildrenType(macro @:pos(nodePos) (null:$ctProps).children),
 						propsType: macro (null:$ctProps),
 						neededAttrs: extractNeededAttrs(tProps),
+						typeChecker: propsFor(macro (null:$ctProps))
+					};
+				case TAbstract(_.toString() => "react.ReactProviderType", [tProps])
+				| TAbstract(_.toString() => "Null", [TAbstract(_.toString() => "react.ReactProviderType", [tProps])]):
+					var ctProps = ComplexType.TAnonymous([
+						{
+							name: "value",
+							pos:  Context.currentPos(),
+							kind: FVar(TypeTools.toComplexType(tProps)),
+							meta: []
+						}
+					]);
+					{
+						children: extractChildrenType(macro @:pos(nodePos) (null:$ctProps).children),
+						propsType: macro (null:$ctProps),
+						neededAttrs: extractNeededAttrs(ComplexTypeTools.toType(ctProps)),
 						typeChecker: propsFor(macro (null:$ctProps))
 					};
 				case TFun(args, ret):

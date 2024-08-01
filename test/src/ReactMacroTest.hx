@@ -295,10 +295,10 @@ class ReactMacroTest
 	@Test
 	public function context()
 	{
-		var Context:ReactContext<{?defA:String, ?defB:String}> = cast {};
-		var e = jsx('<Context.Provider defA="A" />');
+		var Context:ReactContext<{defA:String}> = cast {};
+		var e = jsx('<Context.Provider value=${{defA:"A"}} />');
 		Assert.areEqual(Context.Provider, e.type);
-		assertHasProps(e.props, ['defA'], ['A']);
+		assertHasProps(e.props, ['value'], [{defA:'A'}]);
 	}
 
 	@Test
