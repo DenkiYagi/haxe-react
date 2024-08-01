@@ -1,5 +1,6 @@
 package;
 
+import react.ReactContext;
 import react.React;
 import js.Syntax;
 import massive.munit.Assert;
@@ -289,6 +290,15 @@ class ReactMacroTest
 		var e = jsx('<CompDefaults defA={obj.missingField} defB={null} />');
 		Assert.areEqual(CompDefaults, e.type);
 		assertHasProps(e.props, ['defA', 'defB'], ['A', null]);
+	}
+
+	@Test
+	public function context()
+	{
+		var Context:ReactContext<{?defA:String, ?defB:String}> = cast {};
+		var e = jsx('<Context.Provider defA="A" />');
+		Assert.areEqual(Context.Provider, e.type);
+		assertHasProps(e.props, ['defA'], ['A']);
 	}
 
 	@Test

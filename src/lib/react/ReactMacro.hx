@@ -623,7 +623,9 @@ class ReactMacro
 			}
 			: switch (t) {
 				case TAbstract(_.toString() => "react.ReactTypeOf", [tProps])
-				| TAbstract(_.toString() => "Null", [TAbstract(_.toString() => "react.ReactTypeOf", [tProps])]):
+				| TAbstract(_.toString() => "Null", [TAbstract(_.toString() => "react.ReactTypeOf", [tProps])])
+				| TAbstract(_.toString() => "react.ReactProviderType", [tProps])
+				| TAbstract(_.toString() => "Null", [TAbstract(_.toString() => "react.ReactProviderType", [tProps])]):
 					var ctProps = TypeTools.toComplexType(tProps);
 					{
 						children: extractChildrenType(macro @:pos(nodePos) (null:$ctProps).children),
@@ -631,7 +633,6 @@ class ReactMacro
 						neededAttrs: extractNeededAttrs(tProps),
 						typeChecker: propsFor(macro (null:$ctProps))
 					};
-
 				case TFun(args, ret):
 					switch (args) {
 						case []:
