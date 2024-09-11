@@ -181,18 +181,18 @@ or state for your components. Type parameters constraints have been added to
 ensure at compile time that you don't use unsupported types for `TProps` and/or
 `TState`.
 
-## `ReactFragment`
+## `ReactNode`
 
-`ReactFragment` (in `react.ReactComponent` module) tries to be closer to react
+`ReactNode` (in `react.ReactComponent` module) tries to be closer to react
 in describing a valid element. It replaces `ReactElement` in most API, allowing
 them to use other types allowed by react.
 
-#### `ReactFragment` unifies with either
+#### `ReactNode` unifies with either
 
-* `ReactSingleFragment`
+* `ReactSingleNode`
 * `Array<ReactFragment>`
 
-#### `ReactSingleFragment` being either
+#### `ReactSingleNode` being either
 
 * `ReactElement`
 * `String`

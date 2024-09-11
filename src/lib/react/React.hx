@@ -75,14 +75,6 @@ extern class React {
 	static function forwardRef<TProps, TRef>(render:(props:TProps, ref:ReactRef<TRef>)->ReactNode):ReactTypeOf<TProps>;
 
 	/**
-		Warning
-		Using `Children` is uncommon and can lead to fragile code.
-
-		https://react.dev/reference/react/Children
-	**/
-	static final Children:ReactChildren;
-
-	/**
 		https://react.dev/reference/react/lazy
 	**/
 	static function lazy(loader:Void->Promise<Module<ReactType>>):ReactType;
@@ -211,36 +203,6 @@ extern class React {
 
 	@:native('__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED')
 	static var _internals:ReactSharedInternals;
-}
-
-/**
-	https://react.dev/reference/react/Children
-**/
-extern interface ReactChildren {
-	/**
-		https://react.dev/reference/react/Children#children-map
-	**/
-	function map(children:Dynamic, fn:Array<ReactNode>->ReactNode):Null<Array<ReactNode>>;
-
-	/**
-		https://react.dev/reference/react/Children#children-foreach
-	**/
-	function foreach(children:Dynamic, fn:ReactNode->Void):Void;
-
-	/**
-		https://react.dev/reference/react/Children#children-count
-	**/
-	function count(children:ReactNode):Int;
-
-	/**
-		https://react.dev/reference/react/Children#children-only
-	**/
-	function only(children:ReactNode):ReactSingleFragment;
-
-	/**
-		https://react.dev/reference/react/Children#children-toarray
-	**/
-	function toArray(children:ReactNode):Array<ReactNode>;
 }
 
 @:deprecated
