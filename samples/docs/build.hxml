@@ -1,6 +1,0 @@
-#!/usr/bin/env haxe
-
-common.hxml
-
--main Main
--js bin/server.js

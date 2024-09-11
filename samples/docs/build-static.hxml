@@ -1,6 +1,0 @@
-#!/usr/bin/env haxe
-
-common.hxml
-
--main StaticGenerator
--js bin/static-gen.js
