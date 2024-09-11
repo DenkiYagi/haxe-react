@@ -5,6 +5,8 @@ import react.React;
 import js.Syntax;
 import massive.munit.Assert;
 import react.ReactComponent;
+import react.ReactElement;
+import react.ReactNode;
 import react.ReactMacro.jsx;
 import support.sub.CompExternModule;
 import support.sub.CompModule;
@@ -20,7 +22,7 @@ class CompBasicProps extends ReactComponentOfProps<{a:Int}> {}
 class CompRenderFunctionProps extends ReactComponentOfProps<{?render:()->ReactElement}> {}
 
 typedef RenderProps = {
-	@:optional var children:Int->ReactFragment;
+	@:optional var children:Int->ReactNode;
 }
 
 @:ignoreEmptyRender

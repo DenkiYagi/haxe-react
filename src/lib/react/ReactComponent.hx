@@ -77,7 +77,7 @@ extern class ReactComponentOf<TProps:{}, TState:{}>
 	/**
 		https://facebook.github.io/react/docs/react-component.html#render
 	**/
-	function render():ReactFragment;
+	function render():ReactNode;
 
 	/**
 		https://facebook.github.io/react/docs/react-component.html#componentwillmount
@@ -139,33 +139,3 @@ typedef ReactSource = {
 	fileName:String,
 	lineNumber:Int
 }
-
-typedef ReactElement = {
-	type:ReactType,
-	props:Dynamic,
-	?key:Dynamic,
-	?ref:Dynamic,
-	?_owner:Dynamic,
-
-	#if debug
-	?_store:{validated:Bool},
-	?_shadowChildren:Dynamic,
-	?_source:ReactSource,
-	#end
-}
-
-@:pure @:coreType abstract ReactSingleFragment
-	from String
-	from Float
-	from Bool
-	from ReactElement {}
-
-@:pure @:coreType abstract ReactFragment
-	from ReactSingleFragment
-	from Array<ReactFragment>
-	from Array<ReactElement>
-	from Array<String>
-	from Array<Float>
-	from Array<Int>
-	from Array<Bool>
-	from Array<ReactSingleFragment> {}

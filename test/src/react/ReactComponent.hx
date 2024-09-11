@@ -1,6 +1,9 @@
 package react;
+
 import js.Syntax;
 import haxe.extern.EitherType;
+import react.ReactElement;
+import react.ReactNode;
 
 typedef ReactComponentProps = {
 	/**
@@ -54,7 +57,7 @@ class ReactComponentOf<TProps, TState>
 	/**
 		https://facebook.github.io/react/docs/react-component.html#render
 	**/
-	function render():ReactFragment { return null; }
+	function render():ReactNode { return null; }
 
 	/**
 		https://facebook.github.io/react/docs/react-component.html#componentwillmount
@@ -96,22 +99,3 @@ class ReactComponentOf<TProps, TState>
 		Syntax.code("var $$tre = (typeof Symbol === \"function\" && Symbol.for && Symbol.for(\"react.element\")) || 0xeac7");
 	}
 }
-
-typedef ReactElement = {
-	type:ReactType,
-	props:Dynamic,
-	?key:Dynamic,
-	?ref:Dynamic,
-}
-
-@:pure @:coreType abstract ReactSingleFragment
-	from String
-	from Float
-	from Bool
-	from ReactElement {}
-
-@:pure @:coreType abstract ReactFragment
-	from ReactSingleFragment
-	from Array<ReactFragment>
-	from Array<ReactElement>
-	from Array<ReactSingleFragment> {}

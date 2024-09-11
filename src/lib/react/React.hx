@@ -1,12 +1,11 @@
 package react;
 
 import haxe.extern.Rest;
-import js.lib.Symbol;
 import js.lib.Promise;
-import react.ReactComponent.ReactElement;
-import react.ReactComponent.ReactFragment;
-import react.ReactComponent.ReactSingleFragment;
+import js.lib.Symbol;
 import react.ReactContext;
+import react.ReactElement;
+import react.ReactNode;
 import react.ReactType;
 
 /**
@@ -35,7 +34,7 @@ extern class React {
 	/**
 		https://react.dev/reference/react/isValidElement
 	**/
-	static function isValidElement(object:ReactFragment):Bool;
+	static function isValidElement(object:ReactNode):Bool;
 
 	/**
 		https://react.dev/reference/react/createContext
@@ -73,7 +72,7 @@ extern class React {
 		If you are using an earlier release of React, use callback refs instead
 		https://reactjs.org/docs/refs-and-the-dom.html#callback-refs
 	**/
-	static function forwardRef<TProps, TRef>(render:(props:TProps, ref:ReactRef<TRef>)->ReactFragment):ReactTypeOf<TProps>;
+	static function forwardRef<TProps, TRef>(render:(props:TProps, ref:ReactRef<TRef>)->ReactNode):ReactTypeOf<TProps>;
 
 	/**
 		Warning
@@ -221,27 +220,27 @@ extern interface ReactChildren {
 	/**
 		https://react.dev/reference/react/Children#children-map
 	**/
-	function map(children:Dynamic, fn:Array<ReactFragment>->ReactFragment):Null<Array<ReactFragment>>;
+	function map(children:Dynamic, fn:Array<ReactNode>->ReactNode):Null<Array<ReactNode>>;
 
 	/**
 		https://react.dev/reference/react/Children#children-foreach
 	**/
-	function foreach(children:Dynamic, fn:ReactFragment->Void):Void;
+	function foreach(children:Dynamic, fn:ReactNode->Void):Void;
 
 	/**
 		https://react.dev/reference/react/Children#children-count
 	**/
-	function count(children:ReactFragment):Int;
+	function count(children:ReactNode):Int;
 
 	/**
 		https://react.dev/reference/react/Children#children-only
 	**/
-	function only(children:ReactFragment):ReactSingleFragment;
+	function only(children:ReactNode):ReactSingleFragment;
 
 	/**
 		https://react.dev/reference/react/Children#children-toarray
 	**/
-	function toArray(children:ReactFragment):Array<ReactFragment>;
+	function toArray(children:ReactNode):Array<ReactNode>;
 }
 
 @:deprecated

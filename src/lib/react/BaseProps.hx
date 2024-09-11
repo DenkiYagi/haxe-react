@@ -1,7 +1,6 @@
 package react;
 
-import react.ReactComponent.ReactFragment;
-import react.ReactComponent.ReactSingleFragment;
+import react.ReactNode;
 import tink.core.Noise;
 
 typedef BaseProps<TChildren> = {
@@ -12,10 +11,10 @@ typedef BasePropsOpt<TChildren> = {
 	@:optional var children:TChildren;
 }
 
-typedef BasePropsWithChildren = BaseProps<ReactFragment>;
-typedef BasePropsWithChild = BaseProps<ReactSingleFragment>;
+typedef BasePropsWithChildren = BaseProps<ReactNode>;
+typedef BasePropsWithChild = BaseProps<ReactSingleNode>;
 
 typedef BasePropsWithoutChildren = BasePropsOpt<Noise>;
 
-typedef BasePropsWithOptChildren = BasePropsOpt<ReactFragment>;
-typedef BasePropsWithOptChild = BasePropsOpt<ReactSingleFragment>;
+typedef BasePropsWithOptChildren = BasePropsOpt<ReactNode>;
+typedef BasePropsWithOptChild = BasePropsOpt<ReactSingleNode>;

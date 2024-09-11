@@ -1,6 +1,7 @@
 package react;
 
-import react.ReactComponent;
+import react.ReactElement;
+import react.ReactNode;
 
 typedef ChangesSummary = {
 	@:optional var added:Array<String>;
@@ -80,7 +81,7 @@ class ReactUtil
 		- as a object
 		- or as a function (child->props)
 	**/
-	public static function cloneChildren(children:ReactFragment, props:Dynamic):ReactFragment
+	public static function cloneChildren(children:ReactNode, props:Dynamic):ReactNode
 	{
 		if (Reflect.isFunction(props))
 			return React.Children.map(children, function(child) {

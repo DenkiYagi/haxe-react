@@ -1,8 +1,8 @@
 package react;
 
 import react.ReactType;
-import react.ReactComponent.ReactElement;
-import react.ReactComponent.ReactFragment;
+import react.ReactElement;
+import react.ReactNode;
 
 /**
 	STUB
@@ -54,12 +54,12 @@ extern interface ReactChildren
 	/**
 		https://facebook.github.io/react/docs/react-api.html#react.children.map
 	**/
-	function map(children:Dynamic, fn:ReactFragment->ReactFragment):Dynamic;
+	function map(children:Dynamic, fn:ReactNode->ReactNode):Dynamic;
 
 	/**
 		https://facebook.github.io/react/docs/react-api.html#react.children.foreach
 	**/
-	function foreach(children:Dynamic, fn:ReactFragment->Void):Void;
+	function foreach(children:Dynamic, fn:ReactNode->Void):Void;
 
 	/**
 		https://facebook.github.io/react/docs/react-api.html#react.children.count
@@ -88,13 +88,13 @@ abstract CreateElementType(CET) to CET
 	}
 
 	@:from
-	static public function fromFunction(f:Void->ReactFragment):CreateElementType
+	static public function fromFunction(f:Void->ReactNode):CreateElementType
 	{
 		return cast f;
 	}
 
 	@:from
-	static public function fromFunctionWithProps<TProps>(f:TProps->ReactFragment):CreateElementType
+	static public function fromFunctionWithProps<TProps>(f:TProps->ReactNode):CreateElementType
 	{
 		return cast f;
 	}

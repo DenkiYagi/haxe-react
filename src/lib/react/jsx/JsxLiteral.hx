@@ -29,7 +29,7 @@ class JsxLiteral {
 		if (ref != null) fields.push({field: 'ref', expr: ref});
 		var obj = {expr: EObjectDecl(fields), pos: pos};
 
-		return macro @:pos(pos) ($obj : react.ReactComponent.ReactElement);
+		return macro @:pos(pos) ($obj : react.ReactElement);
 	}
 
 	static public function canUseLiteral(typeInfo:ComponentInfo, ref:Expr)

@@ -2,7 +2,7 @@ package react;
 
 import js.html.AbortSignal;
 import js.lib.Promise;
-import react.ReactComponent.ReactFragment;
+import react.ReactNode;
 
 #if nodejs
 import js.node.stream.Readable;
@@ -27,7 +27,7 @@ extern class ReactDOMServer {
 
 		https://react.dev/reference/react-dom/server/renderToString
 	**/
-	public static function renderToString(node:ReactFragment):String;
+	public static function renderToString(node:ReactNode):String;
 
 	/**
 		`renderToStaticMarkup` renders a non-interactive React tree to an HTML
@@ -40,7 +40,7 @@ extern class ReactDOMServer {
 
 		https://react.dev/reference/react-dom/server/renderToStaticMarkup
 	**/
-	public static function renderToStaticMarkup(node:ReactFragment):String;
+	public static function renderToStaticMarkup(node:ReactNode):String;
 
 	#if nodejs
 	/**
@@ -51,7 +51,7 @@ extern class ReactDOMServer {
 
 		https://react.dev/reference/react-dom/server/renderToPipeableStream
 	**/
-	public static function renderToPipeableStream(node:ReactFragment, options:{
+	public static function renderToPipeableStream(node:ReactNode, options:{
 		?bootstrapScriptContent:String,
 		?bootstrapScripts:Array<String>,
 		?bootstrapModules:Array<String>,
@@ -82,13 +82,13 @@ extern class ReactDOMServer {
 
 		https://react.dev/reference/react-dom/server/renderToStaticNodeStream
 	**/
-	public static function renderToStaticNodeStream(node:ReactFragment):IReadable;
+	public static function renderToStaticNodeStream(node:ReactNode):IReadable;
 
 	/**
 		https://react.dev/reference/react-dom/server/renderToNodeStream
 	**/
 	@:deprecated("Use renderToPipeableStream instead")
-	public static function renderToNodeStream(node:ReactFragment):IReadable;
+	public static function renderToNodeStream(node:ReactNode):IReadable;
 	#else
 	/**
 		`renderToReadableStream` renders a React tree to a Readable Web Stream.
@@ -98,7 +98,7 @@ extern class ReactDOMServer {
 
 		https://react.dev/reference/react-dom/server/renderToReadableStream
 	**/
-	public static function renderToReadableStream(node:ReactFragment, options:{
+	public static function renderToReadableStream(node:ReactNode, options:{
 		?bootstrapScriptContent:String,
 		?bootstrapScripts:Array<String>,
 		?bootstrapModules:Array<String>,

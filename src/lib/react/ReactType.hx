@@ -10,6 +10,8 @@ import haxe.macro.Context;
 abstract ReactType(Dynamic)
 #else
 import react.ReactComponent;
+import react.ReactElement;
+import react.ReactNode;
 
 private typedef Node = EitherType<EitherType<String, Function>, Class<ReactComponent<Dynamic, Dynamic>>>;
 
@@ -27,7 +29,7 @@ abstract ReactType(Node) to Node
 	}
 
 	@:from
-	static public inline function fromFunction(f:Void->ReactFragment):ReactType
+	static public inline function fromFunction(f:Void->ReactNode):ReactType
 	{
 		#if react.debug
 		if (f == null) return isNull();
@@ -36,7 +38,7 @@ abstract ReactType(Node) to Node
 	}
 
 	@:from
-	static public inline function fromFunctionWithProps<TProps>(f:TProps->ReactFragment):ReactType
+	static public inline function fromFunctionWithProps<TProps>(f:TProps->ReactNode):ReactType
 	{
 		#if react.debug
 		if (f == null) return isNull();
@@ -112,7 +114,7 @@ abstract ReactTypeOf<TProps>(ReactType) to ReactType {
 
 	#if !macro
 	@:from
-	static public function fromFunctionWithProps<TProps>(f:TProps->ReactFragment):ReactTypeOf<TProps>
+	static public function fromFunctionWithProps<TProps>(f:TProps->ReactNode):ReactTypeOf<TProps>
 	{
 		return new ReactTypeOf(f);
 	}
@@ -126,7 +128,7 @@ abstract ReactTypeOf<TProps>(ReactType) to ReactType {
 	}
 
 	@:from
-	static public function fromFunctionWithoutProps<TProps>(f:Void->ReactFragment):ReactTypeOf<TProps>
+	static public function fromFunctionWithoutProps<TProps>(f:Void->ReactNode):ReactTypeOf<TProps>
 	{
 		return new ReactTypeOf(f);
 	}

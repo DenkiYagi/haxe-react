@@ -1,12 +1,12 @@
 package react;
 
-import react.ReactComponent.ReactFragment;
+import react.ReactNode;
 import react.ReactType;
 
 @:forward
 abstract ReactContext<T>(IReactContext<T>) from IReactContext<T> to IReactContext<T> {
 	@:to
-	public function toReactType():ReactTypeOf<{children:T->ReactFragment}> {
+	public function toReactType():ReactTypeOf<{children:T->ReactNode}> {
 		return cast this;
 	}
 }

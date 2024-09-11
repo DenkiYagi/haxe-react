@@ -1,10 +1,10 @@
 package react;
 
-import react.ReactComponent.ReactFragment;
+import react.ReactNode;
 
 typedef SuspenseProps = {
-	var fallback:ReactFragment;
-	@:optional var children:ReactFragment;
+	var fallback:ReactNode;
+	@:optional var children:ReactNode;
 }
 
 /**

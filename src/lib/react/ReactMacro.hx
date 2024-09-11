@@ -47,7 +47,7 @@ class ReactMacro
 	}
 
 	#if macro
-	static var REACT_FRAGMENT_CT = macro :react.ReactComponent.ReactFragment;
+	static var REACT_FRAGMENT_CT = macro :react.ReactNode;
 
 	public static function _jsx(expr:Expr):Expr {
 		function children(c:Children)

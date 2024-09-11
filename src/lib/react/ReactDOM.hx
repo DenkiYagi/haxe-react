@@ -2,6 +2,7 @@ package react;
 
 import js.html.Element;
 import react.ReactComponent;
+import react.ReactNode;
 
 /**
 	https://react.dev/reference/react-dom
@@ -16,13 +17,13 @@ extern class ReactDOM
 		https://react.dev/reference/react-dom/render
 	**/
 	@:deprecated("Use ReactDOMClient.createRoot")
-	public static function render(element:ReactFragment, container:Element, ?callback:Void -> Void):ReactFragment;
+	public static function render(element:ReactNode, container:Element, ?callback:Void -> Void):ReactNode;
 
 	/**
 		https://react.dev/reference/react-dom/hydrate
 	**/
 	@:deprecated("Use ReactDOMClient.hydrateRoot")
-	public static function hydrate(element:ReactFragment, container:Element, ?callback:Void -> Void):ReactFragment;
+	public static function hydrate(element:ReactNode, container:Element, ?callback:Void -> Void):ReactNode;
 
 	/**
 		https://react.dev/reference/react-dom/unmountComponentAtNode
@@ -39,7 +40,7 @@ extern class ReactDOM
 	/**
 		https://react.dev/reference/react-dom/createPortal
 	**/
-	public static function createPortal(child:ReactFragment, container:Element):ReactFragment;
+	public static function createPortal(child:ReactNode, container:Element):ReactNode;
 
 	/**
 		Warning:
@@ -92,13 +93,13 @@ extern class ReactDOMClient {
 
 		https://react.dev/reference/react-dom/client/hydrateRoot
 	**/
-	public static function hydrateRoot(container:Element, element:ReactFragment, ?options:{
+	public static function hydrateRoot(container:Element, element:ReactNode, ?options:{
 		?identifierPrefix:String,
 		?onRecoverableError:(err:Any)->Void
 	}):RootType;
 }
 
 typedef RootType = {
-	render:(node:ReactFragment)->Void,
+	render:(node:ReactNode)->Void,
 	unmount:()->Void
 }

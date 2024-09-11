@@ -39,7 +39,7 @@ class ReactWrapperMacro
 
 		var fieldType = publicProps == null
 			? null
-			: macro :$publicProps->react.ReactComponent.ReactFragment;
+			: macro :$publicProps->react.ReactNode;
 
 		Lambda.iter(wrappersMeta, function(m) {
 			if (m.params.length == 0)
