@@ -10,11 +10,6 @@ import react.ReactComponent.ReactFragment;
 extern class React
 {
 	/**
-		https://facebook.github.io/react/docs/react-api.html#react.proptypes
-	**/
-	public static var PropTypes(default, null):ReactPropTypes;
-
-	/**
 		https://facebook.github.io/react/docs/react-api.html#createelement
 	**/
 	public inline static function createElement(type:CreateElementType, ?attrs:Dynamic, children:haxe.extern.Rest<Dynamic>):ReactElement
