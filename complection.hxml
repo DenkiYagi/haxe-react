@@ -1,0 +1,7 @@
+--class-path src/lib
+--library tink_hxx
+
+--js dummy.js
+--no-output
+--dce no
+--no-opt
