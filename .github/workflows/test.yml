@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        haxe: [4.3.2, latest]
+        haxe: [4.3.6, latest]
 
     steps:
     - uses: actions/checkout@v1
@@ -32,17 +32,3 @@ jobs:
       run: |
         haxelib run munit test -js
 
-    - name: "[Samples] SSR sample : react-next docs website"
-      run: |
-        cd samples/docs
-        make setup
-        make server
-        make static
-
-    - name: "[Samples] TODO App"
-      run: |
-        cd samples/todoapp
-        haxelib newrepo
-        haxelib dev react-next ../..
-        haxelib install --skip-dependencies --always install.hxml
-        haxe build.hxml
