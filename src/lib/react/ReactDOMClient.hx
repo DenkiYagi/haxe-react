@@ -6,7 +6,7 @@ import js.html.Element;
 import react.ReactNode;
 
 #if (!react_global)
-@:jsRequire("react-dom", "client")
+@:jsRequire("react-dom/client")
 #end
 @:native("ReactDOMClient")
 extern class ReactDOMClient {
