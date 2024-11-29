@@ -12,7 +12,7 @@ import react.ReactPortal;
 #if (!react_global)
 @:jsRequire("react-dom")
 #end
-@:native('ReactDOM')
+@:native("ReactDOM")
 extern class ReactDOM
 {
 	/**

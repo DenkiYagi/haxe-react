@@ -8,7 +8,7 @@ import react.ReactNode;
 #if (!react_global)
 @:jsRequire("react-dom", "client")
 #end
-@:native('ReactDOM')
+@:native("ReactDOMClient")
 extern class ReactDOMClient {
 	/**
 		`createRoot` lets you create a root to display React components inside a
