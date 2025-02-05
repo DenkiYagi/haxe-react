@@ -6,7 +6,7 @@ import js.html.EventTarget;
 import js.html.DataTransfer;
 import js.html.TouchList;
 
-typedef ReactBaseSyntheticEvent<E = {}, C = Dynamic, T = Dynamic> = {
+typedef ReactBaseSyntheticEvent<E, C = Dynamic, T = Dynamic> = {
 	final nativeEvent:E;
 	final currentTarget:C;
 	final target:T;
@@ -24,7 +24,7 @@ typedef ReactBaseSyntheticEvent<E = {}, C = Dynamic, T = Dynamic> = {
 	final type:String;
 }
 
-typedef ReactSyntheticEvent<T = Element, E = Event> = ReactBaseSyntheticEvent<E, EventTarget & T, EventTarget> & {}
+typedef ReactSyntheticEvent<T = Element, E = Event> = ReactBaseSyntheticEvent<E, T, EventTarget> & {}
 
 typedef ReactClipboardEvent<T = Element> = ReactSyntheticEvent<T, js.html.ClipboardEvent> & {
 	final clipboardData:DataTransfer;
@@ -59,17 +59,15 @@ typedef ReactPointerEvent<T = Element> = ReactMouseEvent<T, js.html.PointerEvent
 
 typedef ReactFocusEvent<Target = Element, RelatedTarget = Element> = ReactSyntheticEvent<Target, js.html.FocusEvent> & {
 	final relatedTarget:Null<RelatedTarget>;
-	final target:Target;
 }
 
-typedef ReactFormEvent<T = Element> = ReactSyntheticEvent<T> & { }
+typedef ReactFormEvent<T = Element> = ReactSyntheticEvent<T> & {
+}
 
 typedef ReactInvalidEvent<T = Element> = ReactSyntheticEvent<T> & {
-	final target:T;
 }
 
 typedef ReactChangeEvent<T = Element> = ReactSyntheticEvent<T> & {
-	final target:T;
 }
 
 enum abstract ModifierKey(String) {
